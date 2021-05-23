@@ -82,7 +82,7 @@ def loc_piv(table):
     total = []
     n = find_neg(table)
     for i, b in zip(table[:-1, n], table[:-1, -1]):
-        if b/i > 0 and i**2 > 0:
+        if i**2 > 0 and b/i > 0 :
             total.append(b/i)
         else:
             total.append(10000)
@@ -117,17 +117,17 @@ def convert(eq):
         g = eq.index('G')
         del eq[g]
         eq = [float(i)*-1 for i in eq]
-        return eq
+        return [eq, False]
     if 'L' in eq:
         l = eq.index('L')
         del eq[l]
         eq = [float(i) for i in eq]
-        return eq
+        return [eq, False]
     if 'E' in eq:
         e = eq.index('E')
         del eq[e]
         eq = [float(i) for i in eq]
-        return eq
+        return [eq, True]
 
 
 def convert_min(table):
@@ -177,13 +177,16 @@ def constrain(table, eq):
                 row = row_check
                 break
             j += 1
-        eq = convert(eq)
+        result = convert(eq)
+        eq = result[0]
+        isEqual = result[1]
         i = 0
         while i < len(eq)-1:
             row[i] = eq[i]
             i += 1
         row[-1] = eq[-1]
-        row[var+j] = 1
+        if not isEqual:
+            row[var+j] = 1
     else:
         print('Cannot add another constraint.')
 
@@ -248,9 +251,11 @@ def maxz(table):
 def minz(table):
     table = convert_min(table)
     while next_round_r(table) == True:
-        table = pivot(loc_piv_r(table)[0], loc_piv_r(table)[1], table)
+        piv_val_r = loc_piv_r(table)
+        table = pivot(piv_val_r[0], piv_val_r[1], table)
     while next_round(table) == True:
-        table = pivot(loc_piv(table)[0], loc_piv(table)[1], table)
+        piv_val = loc_piv(table)
+        table = pivot(piv_val[0], piv_val[1], table)
     lc = len(table[0, :])
     lr = len(table[:, 0])
     var = lc - lr - 1
