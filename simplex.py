@@ -113,7 +113,6 @@ def pivot(row, col, table):
 
 
 def convert(eq):
-    eq = eq.split(',')
     if 'G' in eq:
         g = eq.index('G')
         del eq[g]
@@ -122,6 +121,11 @@ def convert(eq):
     if 'L' in eq:
         l = eq.index('L')
         del eq[l]
+        eq = [float(i) for i in eq]
+        return eq
+    if 'E' in eq:
+        e = eq.index('E')
+        del eq[e]
         eq = [float(i) for i in eq]
         return eq
 
@@ -201,7 +205,7 @@ def add_obj(table):
 
 def obj(table, eq):
     if add_obj(table) == True:
-        eq = [float(i) for i in eq.split(',')]
+        #eq = [float(i) for i in eq.split(',')]
         lr = len(table[:, 0])
         row = table[lr-1, :]
         i = 0
