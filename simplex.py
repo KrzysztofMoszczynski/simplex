@@ -79,16 +79,15 @@ def loc_piv_r(table):
 
 
 def loc_piv(table):
-    if next_round(table):
-        total = []
-        n = find_neg(table)
-        for i, b in zip(table[:-1, n], table[:-1, -1]):
-            if b/i > 0 and i**2 > 0:
-                total.append(b/i)
-            else:
-                total.append(10000)
-        index = total.index(min(total))
-        return [index, n]
+    total = []
+    n = find_neg(table)
+    for i, b in zip(table[:-1, n], table[:-1, -1]):
+        if b/i > 0 and i**2 > 0:
+            total.append(b/i)
+        else:
+            total.append(10000)
+    index = total.index(min(total))
+    return [index, n]
 
 
 def pivot(row, col, table):
@@ -107,6 +106,7 @@ def pivot(row, col, table):
             else:
                 t[i, :] = list(k-r*c)
         t[row, :] = list(r)
+        print(t)
         return t
     else:
         print('Cannot pivot on this element.')
@@ -129,17 +129,8 @@ def convert(eq):
 def convert_min(table):
     table[-1, :-2] = [-1*i for i in table[-1, :-2]]
     table[-1, -1] = -1*table[-1, -1]
+    print(table)
     return table
-
-
-def gen_var(table):
-    lc = len(table[0, :])
-    lr = len(table[:, 0])
-    var = lc - lr - 1
-    v = []
-    for i in range(var):
-        v.append('x'+str(i+1))
-    return v
 
 
 def gen_var(table):
@@ -219,6 +210,7 @@ def obj(table, eq):
             i += 1
         row[-2] = 1
         row[-1] = eq[-1]
+        print(table)
     else:
         print(
             'You must finish adding constraints before the objective function can be added.')
@@ -226,9 +218,11 @@ def obj(table, eq):
 
 def maxz(table):
     while next_round_r(table) == True:
-        table = pivot(loc_piv_r(table)[0], loc_piv_r(table)[1], table)
+        piv_val_r = loc_piv_r(table)
+        table = pivot(piv_val_r[0], piv_val_r[1], table)
     while next_round(table) == True:
-        table = pivot(loc_piv(table)[0], loc_piv(table)[1], table)
+        piv_val = loc_piv(table)
+        table = pivot(piv_val[0], piv_val[1], table)
     lc = len(table[0, :])
     lr = len(table[:, 0])
     var = lc - lr - 1
@@ -267,5 +261,8 @@ def minz(table):
             val[gen_var(table)[i]] = table[loc, -1]
         else:
             val[gen_var(table)[i]] = 0
-            val['min'] = table[-1, -1]*-1
+    val['min'] = table[-1, -1]*-1
     return val
+
+
+########RUN THIS FUNCTION ###########
