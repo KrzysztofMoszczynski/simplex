@@ -1,0 +1,1 @@
+python main.py -o 2,1,0 -c 1,1,G,3 1,2,G,4
