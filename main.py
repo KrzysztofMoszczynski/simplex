@@ -43,7 +43,6 @@ def calculate_min():
         constrain(m, c)
 
     obj(m, objective_fun)
-    #print(constrain_args, obj_func)
 
     return minz(m)
 

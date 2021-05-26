@@ -7,8 +7,6 @@ def gen_matrix(var, cons):
     tab = np.zeros((cons+1, var+cons+2))
     return tab
 
-# Next, we’ll check to see if 1+ pivots are required due to a negative
-# element in the furthest right column, excluding the bottom value, of course.
 
 
 def next_round_r(table):
@@ -18,10 +16,6 @@ def next_round_r(table):
     else:
         return True
 
-# Similarly, we’ll check to see if 1+ pivots are required due to a negative
-# element in the bottom row, excluding the final value.
-#
-
 
 def next_round(table):
     lr = len(table[:, 0])
@@ -30,10 +24,6 @@ def next_round(table):
         return False
     else:
         return True
-
-# And now that we’ve created functions that return booleans, whether or not additional pivots are required,
-# we need to determine
-# where these elements are located. We’ll start with finding negative elements in the furthest right column.
 
 
 def find_neg_r(table):
@@ -45,8 +35,6 @@ def find_neg_r(table):
         n = None
     return n
 
-# Similarly, we need to locate negative elements in the bottom row
-
 
 def find_neg(table):
     lr = len(table[:, 0])
@@ -56,10 +44,6 @@ def find_neg(table):
     else:
         n = None
     return n
-
-# Quick recap, we’ve identified the column and row indexes, respectively,
-# for negative elements in the last column, last row. But we need to take
-# it one step further and find the pivot element corresponding to these values.
 
 
 def loc_piv_r(table):
@@ -274,4 +258,3 @@ def minz(table):
     return val
 
 
-########RUN THIS FUNCTION ###########
